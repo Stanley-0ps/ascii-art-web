@@ -9,11 +9,8 @@
     <h1>
     ASCII Art Web
 </h1>
-    
-</body>
-</html>
-<form action="ascii-art" method="POST">
-    <textarea name="text"></textarea>
+    <form action="ascii-art" method="POST">
+    <textarea name="text" rows="8" cols="50"></textarea>
 
     <label>
         <input type="radio" name="banner" value="shadow">
@@ -21,7 +18,7 @@
     </label>
 
     <label>
-        <input type="radio" name="banner" value="standard">
+        <input type="radio" name="banner" value="standard" checked>
         Standard
     </label>
 
@@ -32,3 +29,7 @@
 
     <button type="submit">Generate</button>
 </form>
+<hr>
+<prev>{{.Result}}</prev>
+</body>
+</html>
