@@ -1,22 +1,17 @@
 package main
 
 import (
-	"asciiArt/server"
-	"embed"
+	"fmt"
+	"net/http"
 )
 
-//go:embed frontend
-var templateFs embed.FS
-
-//go:embed frontend/css
-var cssFiles embed.FS
-
-// go build -ldflags "-X 'main.Style=K'" . (choose between A and k style)
-var Style = "A"
-
+func homeHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "Hello, ASCII Art Web!")
+}
 func main() {
-    server.TemplatesFS = templateFs
-	server.Style = Style
-	server.CssFS = cssFiles
-	server.NewServer()
+	// created a route to request a path to homeHandler
+	http.HandleFunc("/", homeHandler)
+
+	fmt.Print("Server Starting on :8080 ")
+	http.ListenAndServe(":8080", nil)
 }
