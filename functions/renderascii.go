@@ -14,11 +14,13 @@ func RenderAscii(input string, asciiMap map[rune][]string) (string, error) {
 		return "", fmt.Errorf("font map is empty")
 	}
 
+	// Convert \r\n to \n
+	input = strings.ReplaceAll(input, "\r\n", "\n")
+
 	var result strings.Builder
 
-	//handling presence of \n
+	newLine := strings.Split(input, "\n")
 
-	newLine := strings.Split(input, "\\n")
 	for i, words := range newLine {
 		if words == "" {
 			if i < len(newLine)-1 {
@@ -26,9 +28,9 @@ func RenderAscii(input string, asciiMap map[rune][]string) (string, error) {
 			}
 			continue
 		}
+
 		for line := 0; line < 8; line++ {
 			for _, ch := range words {
-
 				val, ok := asciiMap[ch]
 				if !ok {
 					return "", fmt.Errorf("unsupported character: %q", ch)
@@ -39,5 +41,6 @@ func RenderAscii(input string, asciiMap map[rune][]string) (string, error) {
 			result.WriteString("\n")
 		}
 	}
+
 	return result.String(), nil
 }

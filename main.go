@@ -9,9 +9,14 @@ import (
 
 type PageData struct {
 	Result string
+	Text   string
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		http.Error(w, "404 page not found", http.StatusNotFound)
+		return
+	}
 	template, err := template.ParseFiles("templates/index.html") // loading html content from html file
 
 	if err != nil {
@@ -29,6 +34,10 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func asciiArtHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Bad request", http.StatusBadRequest)
+		return
+	}
 	text := r.FormValue("text")
 	banner := r.FormValue("banner")
 
@@ -54,6 +63,7 @@ func asciiArtHandler(w http.ResponseWriter, r *http.Request) {
 
 	data := PageData{
 		Result: result,
+		Text:   text,
 	}
 
 	err = template.Execute(w, data)
@@ -68,8 +78,8 @@ func main() {
 	http.HandleFunc("/ascii-art", asciiArtHandler)
 
 	fmt.Print("Server Starting on :8080 ")
-	http.ListenAndServe(":8080", nil)
-	if ere!=nil{
-		fmt.
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		panic(err)
 	}
 }
