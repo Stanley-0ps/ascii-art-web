@@ -10,6 +10,7 @@ import (
 type PageData struct {
 	Result string
 	Text   string
+	Banner string
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
@@ -17,20 +18,22 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "404 page not found", http.StatusNotFound)
 		return
 	}
-	template, err := template.ParseFiles("templates/index.html") // loading html content from html file
 
+	tmpl, err := template.ParseFiles("templates/index.html")
 	if err != nil {
 		http.Error(w, "Template not found", http.StatusNotFound)
 		return
 	}
 
-	err = template.Execute(w, nil) // send Html content back to browser
+	data := PageData{
+		Banner: "standard",
+	}
 
+	err = tmpl.Execute(w, data)
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
-
 }
 
 func asciiArtHandler(w http.ResponseWriter, r *http.Request) {
@@ -64,6 +67,7 @@ func asciiArtHandler(w http.ResponseWriter, r *http.Request) {
 	data := PageData{
 		Result: result,
 		Text:   text,
+		Banner: banner,
 	}
 
 	err = template.Execute(w, data)

@@ -9,23 +9,26 @@
     <h1>
     ASCII Art Web
 </h1>
-    <form action="ascii-art" method="POST">
-    <textarea name="text" rows="8" cols="50"></textarea>
+    <form action="/ascii-art" method="POST">
+    <textarea name="text" rows="8" cols="50">{{.Text}}</textarea>
 
-    <label>
-        <input type="radio" name="banner" value="shadow">
-        Shadow
-    </label>
+<label>
+    <input type="radio" name="banner" value="standard"
+        {{if eq .Banner "standard"}}checked{{end}}>
+    Standard
+</label>
 
-    <label>
-        <input type="radio" name="banner" value="standard" checked>
-        Standard
-    </label>
+<label>
+    <input type="radio" name="banner" value="shadow"
+        {{if eq .Banner "shadow"}}checked{{end}}>
+    Shadow
+</label>
 
-    <label>
-        <input type="radio" name="banner" value="thinkertoy">
-        Thinkertoy
-    </label>
+<label>
+    <input type="radio" name="banner" value="thinkertoy"
+        {{if eq .Banner "thinkertoy"}}checked{{end}}>
+    Thinkertoy
+</label>
 
     <button type="submit">Generate</button>
 </form>
