@@ -96,7 +96,7 @@ func main() {
 	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/ascii-art", asciiArtHandler)
 
-	fmt.Print("Server Starting on :8080 ")
+	fmt.Print("Server Starting on :http://localhost:8080")
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		panic(err)
