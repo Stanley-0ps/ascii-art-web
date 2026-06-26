@@ -11,7 +11,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgb(76, 90, 88);
+    background: rgb(69, 167, 137);
     font-family: Georgia, 'Times New Roman', Times, serif;
     position: relative;  /* Needed for absolute positioning */
 }
@@ -20,7 +20,7 @@ h1 {
     text-align: center;
     color: #25221f;
     font-size: 2.5rem;
-    position: absolute;   /* Position at top */
+    position: absolute;   /* Position at top */   
     top: 30px;
     left: 50%;
     transform: translateX(-50%);
@@ -51,7 +51,7 @@ label {
     display: inline-block;
     margin: 15px 15px 0 0;
     padding: 12px 20px;
-    border: 2px solid #724a1d;
+    border: 2px solid #d1cbc5;
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
