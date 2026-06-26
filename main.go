@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"strings"
 )
 
 type PageData struct {
@@ -44,6 +45,16 @@ func asciiArtHandler(w http.ResponseWriter, r *http.Request) {
 	text := r.FormValue("text")
 	banner := r.FormValue("banner")
 
+	if strings.TrimSpace(text) == "" {
+		http.Error(w, "Input cannot be empty", http.StatusBadRequest)
+		return
+	}
+
+	if banner == "" {
+		http.Error(w, "Banner is required", http.StatusBadRequest)
+		return
+	}
+
 	fileName := "banners/" + banner + ".txt"
 
 	asciiMap, err := functions.BuildFontMap(fileName)
@@ -77,6 +88,10 @@ func asciiArtHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 func main() {
+
+	fs := http.FileServer(http.Dir("./static"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
+
 	// registered a route to request a path to homeHandler
 	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/ascii-art", asciiArtHandler)
