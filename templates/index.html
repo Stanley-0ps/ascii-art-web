@@ -7,33 +7,40 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h1>
-    ASCII Art Web
-</h1>
+    <h1>ASCII Art Web</h1>
+    
     <form action="/ascii-art" method="POST">
-    <textarea name="text" rows="8" cols="50">{{.Text}}</textarea>
+        <textarea id="text" name="text" maxlength="6000" placeholder="Input Text" tabindex="3" required>{{.Text}}</textarea>
+        <br><br>
 
-<label>
-    <input type="radio" name="banner" value="standard"
-        {{if eq .Banner "standard"}}checked{{end}}>
-    Standard
-</label>
+        <div class="choose">
+            <label for="banner">Banners:</label>
+            <br><br>
+        </div>
+        
+        <select id="banner" name="banner">
+            {{range .Fonts}}
+            <option class="bannerOption" value="{{.}}" {{if eq $.Banner .}}selected{{end}}>{{.}}</option>
+            {{end}}
+        </select>    
 
-<label>
-    <input type="radio" name="banner" value="shadow"
-        {{if eq .Banner "shadow"}}checked{{end}}>
-    Shadow
-</label>
-
-<label>
-    <input type="radio" name="banner" value="thinkertoy" 
-        {{if eq .Banner "thinkertoy"}}checked{{end}}>
-    Thinkertoy
-</label>
-
-    <button type="submit">Generate</button>
-</form>
-<hr>
-<pre>{{.Result}}</pre>
+        <button type="submit">Generate</button>
+    </form>
+    
+    <hr>
+    
+    <!-- Scrollable result container - matches your HTML structure -->
+    <div id="result-container">
+        <pre>{{.Art}}</pre>
+    </div>
+    
+    <!-- Status indicator (only shows when there's art) -->
+    {{if .Art}}
+    <p class="result-status">↕ Scroll vertically • ↔ Scroll horizontally</p>
+    {{end}}
+    
+    <div class="footer">
+        <p>Designed by <a href="https://github.com/Stanley-0ps" target="_blank" class="textlink">Stanley-0ps</a> | Git Project <a href="https://github.com/Stanley-0ps/ascii-art-web" target="_blank" class="textlink">here</a></p>
+    </div>
 </body>
 </html>
