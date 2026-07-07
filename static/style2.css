@@ -47,7 +47,7 @@ select {
 
 h1, h2 {
     margin-bottom: 10px;
-    color: #f84545;
+    color: #fa8221;
 }
 
 p {
@@ -169,7 +169,7 @@ footer p {
 }
 
 footer p a {
-    color: #ffa600;
+    color: #00ff15;
 }
 
 /* Responsive design */
