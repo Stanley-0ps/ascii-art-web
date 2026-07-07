@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ASCII Art Web</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="../static/style.css">
 </head>
 <body>
     <h1>ASCII Art Web</h1>
     
-    <form action="/ascii-art" method="POST">
+    <form action="/ascii-art" method="post">
         <textarea id="text" name="text" maxlength="6000" placeholder="Input Text" tabindex="3" required>{{.Text}}</textarea>
         <br><br>
 
@@ -19,7 +19,7 @@
         </div>
         
         <select id="banner" name="banner">
-            {{range .Fonts}}
+            {{range .Banners}}
             <option class="bannerOption" value="{{.}}" {{if eq $.Banner .}}selected{{end}}>{{.}}</option>
             {{end}}
         </select>    
