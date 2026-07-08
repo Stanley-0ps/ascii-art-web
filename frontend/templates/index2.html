@@ -5,41 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ASCII-ART</title>
     <link rel="icon" href="https://i.ibb.co/zFfCjxH/Pngtree-phoenix-png-6854120.png" type="image/x-icon">
-    <link href="../static/style2.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/frontend/css/style2.css">
 </head>
 <body>
- <div class="kolxi_hna">
-    <div class="input">
-        <section>
-            <h1>ASCII ART GENERATOR</h1>
-            <form method="POST" action="/ascii-art" >
-            <div class="font">
-                <p class="fon">Choose font</p>
-                <select class="selector" name="banner">
-                    {{range .Fonts}}
-                    <option class="option" value="{{.}}" {{if eq $.Banner .}}selected{{end}}>{{.}}</option>
-                    {{end}}
-                </select>                          
+    <div class="app-wrapper">
+        <!-- Dark mode toggle -->
+        <div class="theme-toggle-wrapper">
+            <input id="dark-mode" class="dark-mode-checkbox hidden" type="checkbox">
+            <label for="dark-mode" class="toggle-switch">
+                <span class="toggle-icon sun-icon">☀️</span>
+                <span class="toggle-icon moon-icon">🌙</span>
+            </label>
+        </div>
+
+        <div class="kolxi_hna">
+            <div class="input">
+                <section>
+                    <h1>ASCII ART GENERATOR</h1>
+                    <form method="POST" action="/ascii-art">
+                        <div class="font">
+                            <p class="fon">Choose font</p>
+                            <select class="selector" name="banner">
+                                {{range .Fonts}}
+                                <option class="option" value="{{.}}" {{if eq $.Banner .}}selected{{end}}>{{.}}</option>
+                                {{end}}
+                            </select>
+                        </div>
+                        <p>Enter text</p>
+                        <textarea name="text" class="inputpanel" maxlength="5000" placeholder="Input Text" tabindex="3" required>{{.Text}}</textarea>
+                        <div class="divbtn">
+                            <button id="btn" type="submit" name="action" value="generate">Submit</button>
+                            <button id="btn" type="submit" name="action" value="download">Download</button>
+                        </div>
+                    </form>
+                </section>
             </div>
-            <p>Enter text</p>
-                <textarea name="text" class="inputpanel" maxlength="5000" placeholder="Input Text" tabindex="3" required>{{.Text}}</textarea>
-                <div class="divbtn">
-                <button id="btn" type="submit" name="action" value="generate">submit</button>
-                <button id="btn" type="submit" name="action" value="download">Download</button>
-                </div>
-            </form>
-        </section>
+            <div class="resultpanel">
+                <h2>ART RESULT</h2>
+                <hr class="now page">
+                <pre>{{.Art}}</pre>
+                <hr class="final page">
+                <footer>
+                    <p class="hi">Follow Me : <a target="_blank" href="https://github.com/Stanley-0ps">Stanley-0ps</a></p>
+                </footer>
+            </div>
+        </div>
     </div>
-    <div class="resultpanel">
-        <h2>ART RESULT</h2>
-        <hr class="now page">
-        <pre>{{.Art}}</pre>
-        <hr class="final page">
-        <footer>
-            <p class="hi">Follow Me : <a target="_blank" href="https://github.com/Stanley-0ps">Stanley-0ps</a></p>
-        </footer>
-    </div>
- </div>
+
+    <script>
+        (function() {
+            document.addEventListener("DOMContentLoaded", function () {
+                const darkMode = document.getElementById('dark-mode');
+                if (localStorage.getItem('darkMode') === 'enabled') {
+                    document.body.classList.add('dark-mode');
+                    darkMode.checked = true;
+                }
+                darkMode.addEventListener('change', function () {
+                    if (this.checked) {
+                        document.body.classList.add('dark-mode');
+                        localStorage.setItem('darkMode', 'enabled');
+                    } else {
+                        document.body.classList.remove('dark-mode');
+                        localStorage.setItem('darkMode', 'disabled');
+                    }
+                });
+            });
+        })();
+    </script>
 </body>
 </html>
