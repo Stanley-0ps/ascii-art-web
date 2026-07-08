@@ -16,7 +16,7 @@ func NewServer() {
 	StyleEnv = os.Getenv("STYLE")
 	Port = os.Getenv("PORT")
 	if Port == "" {
-		Port = "8088" // Default port
+		Port = "8080" // Default port
 	}
 
 	http.HandleFunc("/", HomeHandler)

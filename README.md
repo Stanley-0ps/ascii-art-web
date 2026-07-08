@@ -1,37 +1,123 @@
-## Description
-Ascii Art Generator is a web application that allows users to create ASCII art representations of text through a user-friendly web interface.  
-The web application can generates ASCII art representations of input text.  
-The program will take a text and render its graphical representation using ASCII characters.
+# ASCII Art Web
 
-## How to Use
+ASCII Art Web is a Go web application that converts plain text into stylized ASCII art. It provides a browser interface for choosing a banner font, entering text, generating the result, previewing available fonts, and downloading the generated output as a text file.
 
-1. **Clone the Repository:**
+## Features
+
+- Generate ASCII art from browser input.
+- Choose from embedded banner fonts stored in `asciiart/banners`.
+- Preview the same input across available fonts.
+- Download generated art as `ascii.txt`.
+- Serve HTML templates and CSS from Go embedded files.
+- Optional dark mode and alternate UI style.
+- Custom runtime fonts can be loaded from a local `banners/` directory.
+
+## Requirements
+
+- Go 1.22.2 or newer.
+- A web browser.
+
+## Run Locally
+
+Clone the project:
 
 ```bash
 git clone https://github.com/Stanley-0ps/ascii-art-web.git
+cd ascii-art-web
 ```
 
-2. **Run the program or build it:**
+Start the server:
 
 ```bash
 go run .
 ```
 
-or
-```bash
-go build -o app .
-./app
+Open the app in your browser:
+
+```text
+http://localhost:8080
 ```
 
-3. **Access the web app:**
+To build and run a binary:
 
-Open your web browser and navigate to `http://localhost:8080` to see the Ascii-art-web interface. Just choose your font and click the `Generate` button.
+```bash
+go build -o ascii-art-web .
+./ascii-art-web
+```
 
-## Implementation details
+## Configuration
 
-The `HomeHandler` manages GET requests to display the main page, which includes a list of available font styles. It parses an HTML template from the embedded file system and populates it with default data, including the available fonts. The `ReadFonts` method scans the embedded font directory to retrieve and list the available font styles for use in generating ASCII art.
+The server reads these environment variables:
 
-The `AsciiArtHandler` handles POST requests to generate ASCII art based on user-provided text and banner style. It extracts the input from the request, validates it, and uses the `asciiart.ASCIIArt` function to produce the art. The handler then renders the updated page with the generated art and any available fonts. Error handling ensures that invalid requests or internal server issues are properly communicated with appropriate HTTP status codes.
+| Variable | Default | Description |
+| --- | --- | --- |
+| `PORT` | `8080` | HTTP port used by the web server. |
+| `STYLE` | `A` | UI style. Set to `K` to use the alternate template and stylesheet. |
+
+Examples:
+
+```bash
+PORT=3000 go run .
+```
+
+```bash
+STYLE=K go run .
+```
+
+## Docker
+
+The repository includes a Dockerfile and helper scripts.
+
+Build an image:
+
+```bash
+docker build -t ascii-art-web .
+```
+
+Run a container:
+
+```bash
+docker run --rm -p 8080:8080 -e PORT=8080 ascii-art-web
+```
+
+Or use the interactive helper script:
+
+```bash
+./run_Docker.sh
+```
+
+## How It Works
+
+The application exposes three main routes:
+
+| Route | Method | Purpose |
+| --- | --- | --- |
+| `/` | `GET` | Render the home page and font selector. |
+| `/ascii-art` | `POST` | Generate, preview, or download ASCII art from form input. |
+| `/css/` | `GET` | Serve embedded CSS files. |
+
+The ASCII generation logic is in `asciiart/asciiArt.go`. The web server is in the `server` package, and `main.go` embeds the frontend files before starting the server.
+
+## Project Structure
+
+```text
+.
+|-- asciiart/              # ASCII art generation logic and banner fonts
+|-- frontend/
+|   |-- css/               # Stylesheets
+|   `-- templates/         # HTML templates
+|-- server/                # HTTP handlers, validation, and errors
+|-- main.go                # Application entry point and embedded files
+|-- Dockerfile             # Container build file
+`-- README.md
+```
+
+## Input Notes
+
+Only printable ASCII characters are supported, plus newlines. Non-ASCII characters are rejected by the generator.
+
+Runtime font files placed in `./banners` must follow the supported banner format used by the project.
 
 ## Author
-- [Stanley-0ps](https://github.com/Stanley-0ps)
+
+[Stanley-0ps](https://github.com/Stanley-0ps)

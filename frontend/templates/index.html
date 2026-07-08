@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="icon" href="https://img.icons8.com/?size=48&id=TEcvhDoDbTkh&format=png" type="image/x-icon">
-    <link rel="stylesheet" href="/frontend/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div class="app-card">
@@ -51,7 +51,7 @@
                         <div class="field-label">
                             <span>⎔</span> Input text
                         </div>
-                        <textarea type="text" id="text" name="text" maxlength="6000" placeholder="Type or paste your text…" tabindex="3" required>{{.Text}}</textarea>
+                        <textarea type="text" id="text" name="text" maxlength="6000" placeholder="Type or paste your text…" tabindex="3" wrap="off" required>{{.Text}}</textarea>
                     </div>
 
                     <!-- action buttons – all name/value pairs as required -->
