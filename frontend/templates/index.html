@@ -3,44 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASCII Art Web</title>
-    <link rel="stylesheet" href="../static/style.css">
+    <title>ASCII Art Generator</title>
+    <!-- Font & icon libraries -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://i.ibb.co/zFfCjxH/Pngtree-phoenix-png-6854120.png" type="image/x-icon">
+    <link rel="stylesheet" href="/frontend/css/style.css">
 </head>
 <body>
-    <h1>ASCII Art Web</h1>
-    
-    <form action="/ascii-art" method="post">
-        <textarea id="text" name="text" maxlength="6000" placeholder="Input Text" tabindex="3" required>{{.Text}}</textarea>
-        <br><br>
+    <div class="app-card">
 
-        <div class="choose">
-            <label for="banner">Banners:</label>
-            <br><br>
+        <!-- top bar: brand + dark mode toggle -->
+        <div class="top-bar">
+            <div class="brand">
+                <h1>ascii<span style="font-weight:300;">·</span>art <span class="badge">v2</span></h1>
+            </div>
+            <div class="toggle-wrapper">
+                <span style="font-size:0.85rem; color:#a1a1aa;">dark</span>
+                <input id="dark-mode" class="dark-mode-checkbox hidden" type="checkbox">
+                <label for="dark-mode" class="toggle-switch">
+                    <span class="toggle-icon sun-icon">☀️</span>
+                    <span class="toggle-icon moon-icon">🌙</span>
+                </label>
+            </div>
         </div>
-        
-        <select id="banner" name="banner">
-            {{range .Banners}}
-            <option class="bannerOption" value="{{.}}" {{if eq $.Banner .}}selected{{end}}>{{.}}</option>
-            {{end}}
-        </select>    
 
-        <button type="submit">Generate</button>
-    </form>
-    
-    <hr>
-    
-    <!-- Scrollable result container - matches your HTML structure -->
-    <div id="result-container">
-        <pre>{{.Art}}</pre>
+        <!-- main grid: form + result -->
+        <div class="main-grid">
+            <!-- FORM section – all backend attributes preserved -->
+            <section class="form-section">
+                <form action="/ascii-art" method="post" id="asciiForm">
+                    <!-- banner / font select -->
+                    <div class="field-group">
+                        <div class="field-label">
+                            <span>⌨</span> Banner Style
+                        </div>
+                        <select id="banner" name="banner">
+                            {{range .Fonts}}
+                            <option class="bannerOption" value="{{.}}" {{if eq $.Banner .}}selected{{end}}>{{.}}</option>
+                            {{end}}
+                        </select>
+                    </div>
+
+                    <!-- text input -->
+                    <div class="field-group">
+                        <div class="field-label">
+                            <span>⎔</span> Input text
+                        </div>
+                        <textarea type="text" id="text" name="text" maxlength="6000" placeholder="Type or paste your text…" tabindex="3" required>{{.Text}}</textarea>
+                    </div>
+
+                    <!-- action buttons – all name/value pairs as required -->
+                    <div class="action-bar">
+                        <button class="btn btn-primary" name="action" value="generate" type="submit">Generate</button>
+                        <button class="btn btn-secondary" name="action" value="preview" type="submit">Preview</button>
+                        <button class="btn btn-download" name="action" value="download" type="submit">Download</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- RESULT section -->
+            <section class="result-section">
+                <div class="result-header">
+                    <h2>⏺ output</h2>
+                    <div class="copy-group">
+                        <span class="copied-msg" id="copiedMsg">✓ Copied!</span>
+                        <button class="copy-btn" onclick="copyToClipboard()" aria-label="Copy to clipboard">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="ascii-output">
+                    {{if .Art}}
+                    <pre class="ascii">{{.Art}}</pre>
+                    {{else}}
+                    <pre class="placeholder">  *your ascii art will appear here*  </pre>
+                    {{end}}
+                </div>
+            </section>
+        </div>
+
+        <!-- footer -->
+        <div class="footer">
+            <span>designed by <a href="https://github.com/Stanley-0ps" target="_blank">Stanley-0ps</a></span>
+            <span>·</span>
+            <span>git project <a href="https://github.com/Stanley-0ps/ascii-art-web.git" target="_blank">ascii-art-web</a></span>
+        </div>
     </div>
-    
-    <!-- Status indicator (only shows when there's art) -->
-    {{if .Art}}
-    <p class="result-status">↕ Scroll vertically • ↔ Scroll horizontally</p>
-    {{end}}
-    
-    <div class="footer">
-        <p>Designed by <a href="https://github.com/Stanley-0ps" target="_blank" class="textlink">Stanley-0ps</a> | Git Project <a href="https://github.com/Stanley-0ps/ascii-art-web" target="_blank" class="textlink">here</a></p>
-    </div>
+
+    <script>
+        (function() {
+            // dark mode toggle – preserved behaviour
+            document.addEventListener("DOMContentLoaded", function () {
+                const darkMode = document.getElementById('dark-mode');
+                if (localStorage.getItem('darkMode') === 'enabled') {
+                    document.body.classList.add('dark-mode');
+                    darkMode.checked = true;
+                }
+                darkMode.addEventListener('change', function () {
+                    if (this.checked) {
+                        document.body.classList.add('dark-mode');
+                        localStorage.setItem('darkMode', 'enabled');
+                    } else {
+                        document.body.classList.remove('dark-mode');
+                        localStorage.setItem('darkMode', 'disabled');
+                    }
+                });
+            });
+
+            // copy to clipboard (exact same logic, but uses .ascii)
+            window.copyToClipboard = function() {
+                const preElem = document.querySelector('.ascii');
+                if (!preElem) {
+                    console.warn('no ascii content to copy');
+                    return;
+                }
+                const text = preElem.innerText;
+                if (!text || text.trim() === '') {
+                    return;
+                }
+                navigator.clipboard.writeText(text).then(() => {
+                    const msg = document.getElementById('copiedMsg');
+                    if (msg) {
+                        msg.style.opacity = 1;
+                        setTimeout(() => { msg.style.opacity = 0; }, 1000);
+                    }
+                }).catch(err => {
+                    console.error('copy failed: ', err);
+                });
+            };
+        })();
+    </script>
 </body>
 </html>
