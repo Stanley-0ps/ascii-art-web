@@ -11,7 +11,7 @@ import (
 	"text/template"
 	"time"
 
-	"asciiArt/asciiart"
+	"ascii-art/ascii"
 )
 
 var TemplatesFS embed.FS
