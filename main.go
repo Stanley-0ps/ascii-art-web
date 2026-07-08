@@ -5,10 +5,10 @@ import (
 	"embed"
 )
 
-//go:embed templates
+//go:embed frontend
 var templateFs embed.FS
 
-//go:embed static
+//go:embed frontend
 var cssFiles embed.FS
 
 // go build -ldflags "-X 'main.Style=K'" . (choose between A and k style)

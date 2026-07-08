@@ -1,7 +1,6 @@
 package server
 
 import (
-	asciiart "ascii-art/ascii"
 	"bytes"
 	"embed"
 	"io/fs"
@@ -11,6 +10,8 @@ import (
 	"strings"
 	"text/template"
 	"time"
+
+	"asciiArt/asciiart"
 )
 
 var TemplatesFS embed.FS
@@ -47,7 +48,7 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if Style == "K" || StyleEnv == "K" {
+	if Style == "K"  || StyleEnv == "K" {
 		tmpl, err = template.ParseFS(TemplatesFS, "frontend/templates/index2.html")
 	} else {
 		tmpl, err = template.ParseFS(TemplatesFS, "frontend/templates/index.html")
