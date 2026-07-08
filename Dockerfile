@@ -1,5 +1,5 @@
 # Start by using an official Golang image as the build environment
-FROM golang:1.20-alpine AS builder
+FROM golang:1.22-alpine AS builder
 
 LABEL stage="builder" version="1.0" description="asciiWeb: A Go-based web application that serves ASCII art text."
 
